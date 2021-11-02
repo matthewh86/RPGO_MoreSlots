@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Default" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Guid>cf50321a-d81e-4c37-a102-e32a9273ee20</Guid>
+    <Name>RPGO More Slots</Name>
+    <Description>Description of My XCOM 2 Mod.</Description>
+    <SteamPublishID>0</SteamPublishID>
+    <AssemblyName>RPGO More Slots</AssemblyName>
+    <RootNamespace>RPGO More Slots</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Config\" />
+    <Folder Include="Localization\" />
+    <Folder Include="Src\" />
+    <Folder Include="Src\RPGOMoreSlots\" />
+    <Folder Include="Src\RPGOMoreSlots\Classes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\XComRPGOMoreSlots.ini">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Localization\RPGOMoreSlots.int">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ReadMe.txt" />
+    <Content Include="ModPreview.jpg" />
+    <Content Include="Config\XComEditor.ini" />
+    <Content Include="Config\XComEngine.ini" />
+    <Content Include="Config\XComGame.ini" />
+    <Content Include="Localization\XComGame.int" />
+    <Content Include="Src\RPGOMoreSlots\Classes\X2DownloadableContentInfo_RPGOMoreSlots.uc" />
+    <Content Include="Src\RPGOMoreSlots\Classes\X2StrategyElement_RPGOMoreSlots.uc">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildLocalExtensionPath)\XCOM2.targets" />
+</Project>
