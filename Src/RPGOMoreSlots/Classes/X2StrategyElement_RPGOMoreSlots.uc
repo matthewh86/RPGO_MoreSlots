@@ -1,113 +1,50 @@
-class X2StrategyElement_RPGOMoreSlots extends CHItemSlotSet config (VestSlot);
+class X2StrategyElement_RPGOMoreSlots extends CHItemSlotSet config (RPGOMoreSlots);
 
-var localized string slotLetter_Ammo;
-var localized string slotLetter_Vest;
-var localized string slotLetter_TechGadget;
-var localized string slotLetter_PsiGadget;
-var localized string slotLetter_WristGadget;
-var localized string slotLetter_HeavyGadget;
+var localized string strSlotLetter_TechGadget;
+var localized string strSlotLetter_WristGadget;
+var localized string strSlotLetter_HeavyGadget;
 
-var config array<name> AbilityUnlocksSlot_Ammo;
-var config array<name> AbilityUnlocksSlot_Vest;
 var config array<name> AbilityUnlocksSlot_TechGadget;
-var config array<name> AbilityUnlocksSlot_PsiGadget;
 var config array<name> AbilityUnlocksSlot_WristGadget;
 var config array<name> AbilityUnlocksSlot_HeavyGadget;
 
-var config array<name> AllowedItemCategories_Ammo;
-var config array<name> AllowedItemCategories_Vest;
 var config array<name> AllowedItemCategories_TechGadget;
-var config array<name> AllowedItemCategories_PsiGadget;
 var config array<name> AllowedItemCategories_WristGadget;
 var config array<name> AllowedItemCategories_HeavyGadget;
 
-var config array<name> AllowedSoldierClasses_Ammo;
-var config array<name> AllowedSoldierClasses_Vest;
 var config array<name> AllowedSoldierClasses_TechGadget;
-var config array<name> AllowedSoldierClasses_PsiGadget;
 var config array<name> AllowedSoldierClasses_WristGadget;
 var config array<name> AllowedSoldierClasses_HeavyGadget;
 
-var config array<name> AllowedCharacterTemplates_Ammo;
-var config array<name> AllowedCharacterTemplates_Vest;
 var config array<name> AllowedCharacterTemplates_TechGadget;
-var config array<name> AllowedCharacterTemplates_PsiGadget;
 var config array<name> AllowedCharacterTemplates_WristGadget;
 var config array<name> AllowedCharacterTemplates_HeavyGadget;
 
-var config bool bAllowEmpty_Ammo;
-var config bool bAllowEmpty_Vest;
 var config bool bAllowEmpty_TechGadget;
-var config bool bAllowEmpty_PsiGadget;
 var config bool bAllowEmpty_WristGadget;
 var config bool bAllowEmpty_HeavyGadget;
 
 var config bool bLog;
 
-static enum SlotType
-
 static function array<X2DataTemplate> CreateTemplates()
 {
 	local array<X2DataTemplate> Templates;
-	Templates.AddItem(CreateSlotTemplate('Ammo');
-	Templates.AddItem(CreateSlotTemplate('Vest');
-	Templates.AddItem(CreateSlotTemplate('TechGadget');
-	Templates.AddItem(CreateSlotTemplate('PsiGadget');
-	Templates.AddItem(CreateSlotTemplate('WristGadget');
-	Templates.AddItem(CreateSlotTemplate('HeavyGadget');
+	Templates.AddItem(CreateSlotTemplate('TechGadget'));
+	Templates.AddItem(CreateSlotTemplate('WristGadget'));
+	Templates.AddItem(CreateSlotTemplate('HeavyGadget'));
 	return Templates;
 }
 
-static function X2DataTemplate CreateSlotTemplate(string slot)
+static function X2DataTemplate CreateSlotTemplate(name slot)
 {
 	local CHItemSlot template;
 
 	`CREATE_X2TEMPLATE(class'CHItemSlot', template, slot);
 
 	switch(slot) {
-		case 'Ammo':
-			template.InvSlot = eInvSlot_Ammo;
-			template.SlotCatMask = CHItemSlot.SLOT_ITEM;
-			// Unused for now
-			template.IsUserEquipSlot = true;
-			// Uses unique rule
-			template.IsEquippedSlot = true;
-			// Does not bypass unique rule
-			template.BypassesUniqueRule = false;
-			template.IsMultiItemSlot = false;
-			template.IsSmallSlot = true;
-
-			template.CanAddItemToSlotFn = CanAddItemToSlot_Ammo;
-			template.UnitHasSlotFn = HasSlot_Ammo;
-			template.GetPriorityFn = GetPriority;
-			template.GetDisplayLetter = default.slotLetter_Ammo;
-			template.ShowItemInLockerListFn = ShowItemInLockerList_Ammo;
-			template.ValidateLoadoutFn = ValidateLoadout_Ammo;
-			template.GetSlotUnequipBehaviorFn = GetUnequipBehavior_Ammo;
-			break;
-		case: 'Vest':
-			template.InvSlot = eInvSlot_Vest;
-			template.SlotCatMask = CHItemSlot.SLOT_ITEM;
-			// Unused for now
-			template.IsUserEquipSlot = true;
-			// Uses unique rule
-			template.IsEquippedSlot = true;
-			// Does not bypass unique rule
-			template.BypassesUniqueRule = false;
-			template.IsMultiItemSlot = false;
-			template.IsSmallSlot = true;
-
-			template.CanAddItemToSlotFn = CanAddItemToSlot_Vest;
-			template.UnitHasSlotFn = HasSlot_Vest;
-			template.GetPriorityFn = GetPriority;
-			template.GetDisplayLetter = default.slotLetter_Vest;
-			template.ShowItemInLockerListFn = ShowItemInLockerList_Vest;
-			template.ValidateLoadoutFn = ValidateLoadout_Vest;
-			template.GetSlotUnequipBehaviorFn = GetUnequipBehavior_Vest;
-			break;
-		case: 'TechGadget':
-			template.InvSlot = eInvSlot_TechGadget;
-			template.SlotCatMask = CHItemSlot.SLOT_WEAPON;
+		case 'TechGadget':
+			template.InvSlot = eInvSlot_TacticalGadget;
+			template.SlotCatMask = template.SLOT_WEAPON;
 			// Unused for now
 			template.IsUserEquipSlot = true;
 			// Uses unique rule
@@ -120,34 +57,14 @@ static function X2DataTemplate CreateSlotTemplate(string slot)
 			template.CanAddItemToSlotFn = CanAddItemToSlot_TechGadget;
 			template.UnitHasSlotFn = HasSlot_TechGadget;
 			template.GetPriorityFn = GetPriority;
-			template.GetDisplayLetter = default.slotLetter_TechGadget;
+			template.GetDisplayLetterFn = GetDisplayLetter_TechGadget;
 			template.ShowItemInLockerListFn = ShowItemInLockerList_TechGadget;
 			template.ValidateLoadoutFn = ValidateLoadout_TechGadget;
 			template.GetSlotUnequipBehaviorFn = GetUnequipBehavior_TechGadget;
 			break;
-		case: 'PsiGadget':
-			template.InvSlot = eInvSlot_PsiGadget;
-			template.SlotCatMask = CHItemSlot.SLOT_WEAPON;
-			// Unused for now
-			template.IsUserEquipSlot = true;
-			// Uses unique rule
-			template.IsEquippedSlot = true;
-			// Does not bypass unique rule
-			template.BypassesUniqueRule = false;
-			template.IsMultiItemSlot = false;
-			template.IsSmallSlot = true;
-
-			template.CanAddItemToSlotFn = CanAddItemToSlot_PsiGadget;
-			template.UnitHasSlotFn = HasSlot_PsiGadget;
-			template.GetPriorityFn = GetPriority;
-			template.GetDisplayLetter = default.slotLetter_PsiGadget;
-			template.ShowItemInLockerListFn = ShowItemInLockerList_PsiGadget;
-			template.ValidateLoadoutFn = ValidateLoadout_PsiGadget;
-			template.GetSlotUnequipBehaviorFn = GetUnequipBehavior_PsiGadget;
-			break;
-		case: 'WristGadget':
-			template.InvSlot = eInvSlot_WristGadget;
-			template.SlotCatMask = CHItemSlot.SLOT_WEAPON;
+		case 'WristGadget':
+			template.InvSlot = eInvSlot_PrimaryPayload;
+			template.SlotCatMask = template.SLOT_WEAPON;
 			// Unused for now
 			template.IsUserEquipSlot = true;
 			// Uses unique rule
@@ -160,14 +77,14 @@ static function X2DataTemplate CreateSlotTemplate(string slot)
 			template.CanAddItemToSlotFn = CanAddItemToSlot_WristGadget;
 			template.UnitHasSlotFn = HasSlot_WristGadget;
 			template.GetPriorityFn = GetPriority;
-			template.GetDisplayLetter = default.slotLetter_WristGadget;
+			template.GetDisplayLetterFn = GetDisplayLetter_WristGadget;
 			template.ShowItemInLockerListFn = ShowItemInLockerList_WristGadget;
 			template.ValidateLoadoutFn = ValidateLoadout_WristGadget;
 			template.GetSlotUnequipBehaviorFn = GetUnequipBehavior_WristGadget;
 			break;
-		case: 'HeavyGadget':
-			template.InvSlot = eInvSlot_HeavyGadget;
-			template.SlotCatMask = CHItemSlot.SLOT_WEAPON;
+		case 'HeavyGadget':
+			template.InvSlot = eInvSlot_SecondaryPayload;
+			template.SlotCatMask = template.SLOT_WEAPON;
 			// Unused for now
 			template.IsUserEquipSlot = true;
 			// Uses unique rule
@@ -180,49 +97,49 @@ static function X2DataTemplate CreateSlotTemplate(string slot)
 			template.CanAddItemToSlotFn = CanAddItemToSlot_HeavyGadget;
 			template.UnitHasSlotFn = HasSlot_HeavyGadget;
 			template.GetPriorityFn = GetPriority;
-			template.GetDisplayLetter = default.slotLetter_HeavyGadget;
+			template.GetDisplayLetterFn = GetDisplayLetter_HeavyGadget;
 			template.ShowItemInLockerListFn = ShowItemInLockerList_HeavyGadget;
 			template.ValidateLoadoutFn = ValidateLoadout_HeavyGadget;
 			template.GetSlotUnequipBehaviorFn = GetUnequipBehavior_HeavyGadget;
 			break;
 		default:
-			`LOG('Unsupported slot: ' @ slot, default.bLog, 'RPGOMoreSlots');
+//			`LOG('Unsupported slot: ' @ slot, default.bLog, 'RPGOMoreSlots');
 	}
 
 	return template;
 }
 
-static function bool CanAddItemToSlot_Ammo(CHItemSlot Slot, XComGameState_Unit Unit, X2ItemTemplate Template, optional XComGameState CheckGameState, optional int Quantity = 1, optional XComGameState_Item ItemState)
+static function string GetDisplayLetter_TechGadget(CHItemSlot Slot)
 {
-	return CanAddItemToSlot(Slot, Unit, Template, CheckGameState, Quantity, ItemState, default.AllowedItemCategories_Ammo);
+	return default.strSlotLetter_TechGadget;
 }
 
-static function bool CanAddItemToSlot_Vest(CHItemSlot Slot, XComGameState_Unit Unit, X2ItemTemplate Template, optional XComGameState CheckGameState, optional int Quantity = 1, optional XComGameState_Item ItemState)
+static function string GetDisplayLetter_WristGadget(CHItemSlot Slot)
 {
-	return CanAddItemToSlot(Slot, Unit, Template, CheckGameState, Quantity, ItemState, default.AllowedItemCategories_Vest);
+	return default.strSlotLetter_WristGadget;
+}
+
+static function string GetDisplayLetter_HeavyGadget(CHItemSlot Slot)
+{
+	return default.strSlotLetter_HeavyGadget;
 }
 
 static function bool CanAddItemToSlot_TechGadget(CHItemSlot Slot, XComGameState_Unit Unit, X2ItemTemplate Template, optional XComGameState CheckGameState, optional int Quantity = 1, optional XComGameState_Item ItemState)
 {
-	return CanAddItemToSlot(Slot, Unit, Template, CheckGameState, Quantity, ItemState, default.AllowedItemCategories_TechGadget);
-}
-
-static function bool CanAddItemToSlot_PsiGadget(CHItemSlot Slot, XComGameState_Unit Unit, X2ItemTemplate Template, optional XComGameState CheckGameState, optional int Quantity = 1, optional XComGameState_Item ItemState)
-{
-	return CanAddItemToSlot(Slot, Unit, Template, CheckGameState, Quantity, ItemState, default.AllowedItemCategories_PsiGadget);
+	return CanAddItemToSlot(default.AllowedItemCategories_TechGadget, Slot, Unit, Template, CheckGameState, Quantity, ItemState);
 }
 
 static function bool CanAddItemToSlot_WristGadget(CHItemSlot Slot, XComGameState_Unit Unit, X2ItemTemplate Template, optional XComGameState CheckGameState, optional int Quantity = 1, optional XComGameState_Item ItemState)
 {
-	return CanAddItemToSlot(Slot, Unit, Template, CheckGameState, Quantity, ItemState, default.AllowedItemCategories_WristGadget);
+	return CanAddItemToSlot(default.AllowedItemCategories_WristGadget, Slot, Unit, Template, CheckGameState, Quantity, ItemState);
 }
 
 static function bool CanAddItemToSlot_HeavyGadget(CHItemSlot Slot, XComGameState_Unit Unit, X2ItemTemplate Template, optional XComGameState CheckGameState, optional int Quantity = 1, optional XComGameState_Item ItemState)
 {
-	return CanAddItemToSlot(Slot, Unit, Template, CheckGameState, Quantity, ItemState, default.AllowedItemCategories_HeavyGadget);
+	return CanAddItemToSlot(default.AllowedItemCategories_HeavyGadget, Slot, Unit, Template, CheckGameState, Quantity, ItemState);
 }
 
-static function bool CanAddItemToSlot(CHItemSlot Slot, XComGameState_Unit Unit, X2ItemTemplate Template, optional XComGameState CheckGameState, optional int Quantity = 1, optional XComGameState_Item ItemState, array<name> AllowedItemCategories)
+static function bool CanAddItemToSlot(array<name> AllowedItemCategories, CHItemSlot Slot, XComGameState_Unit Unit, X2ItemTemplate Template, optional XComGameState CheckGameState, optional int Quantity = 1, optional XComGameState_Item ItemState)
 {
 	local string strDummy;
 
@@ -238,31 +155,19 @@ static function bool CanAddItemToSlot(CHItemSlot Slot, XComGameState_Unit Unit, 
 	}
 }
 
-static function bool HasSlot_Ammo(CHItemSlot Slot, XComGameState_Unit UnitState, out string LockedReason, optional XComGameState CheckGameState) {
-	return HasSlot(Slot, UnitSTate, LockedReason, CheckGameState, default.AllowedSoldierClasses_Ammo, default.AllowedCharacterTemplates_Ammo, default.AbilityUnlocksSlot_Ammo);
-}
-
-static function bool HasSlot_Vest(CHItemSlot Slot, XComGameState_Unit UnitState, out string LockedReason, optional XComGameState CheckGameState) {
-	return HasSlot(Slot, UnitSTate, LockedReason, CheckGameState, default.AllowedSoldierClasses_Vest, default.AllowedCharacterTemplates_Vest, default.AbilityUnlocksSlot_Vest);
-}
-
 static function bool HasSlot_TechGadget(CHItemSlot Slot, XComGameState_Unit UnitState, out string LockedReason, optional XComGameState CheckGameState) {
-	return HasSlot(Slot, UnitSTate, LockedReason, CheckGameState, default.AllowedSoldierClasses_TechGadget, default.AllowedCharacterTemplates_TechGadget, default.AbilityUnlocksSlot_TechGadget);
-}
-
-static function bool HasSlot_PsiGadget(CHItemSlot Slot, XComGameState_Unit UnitState, out string LockedReason, optional XComGameState CheckGameState) {
-	return HasSlot(Slot, UnitSTate, LockedReason, CheckGameState, default.AllowedSoldierClasses_PsiGadget, default.AllowedCharacterTemplates_PsiGadget, default.AbilityUnlocksSlot_PsiGadget);
+	return HasSlot(default.AllowedSoldierClasses_TechGadget, default.AllowedCharacterTemplates_TechGadget, default.AbilityUnlocksSlot_TechGadget, Slot, UnitSTate, LockedReason, CheckGameState);
 }
 
 static function bool HasSlot_WristGadget(CHItemSlot Slot, XComGameState_Unit UnitState, out string LockedReason, optional XComGameState CheckGameState) {
-	return HasSlot(Slot, UnitSTate, LockedReason, CheckGameState, default.AllowedSoldierClasses_WristGadget, default.AllowedCharacterTemplates_WristGadget, default.AbilityUnlocksSlot_WristGadget);
+	return HasSlot(default.AllowedSoldierClasses_WristGadget, default.AllowedCharacterTemplates_WristGadget, default.AbilityUnlocksSlot_WristGadget, Slot, UnitSTate, LockedReason, CheckGameState);
 }
 
 static function bool HasSlot_HeavyGadget(CHItemSlot Slot, XComGameState_Unit UnitState, out string LockedReason, optional XComGameState CheckGameState) {
-	return HasSlot(Slot, UnitSTate, LockedReason, CheckGameState, default.AllowedSoldierClasses_HeavyGadget, default.AllowedCharacterTemplates_HeavyGadget, default.AbilityUnlocksSlot_HeavyGadget);
+	return HasSlot(default.AllowedSoldierClasses_HeavyGadget, default.AllowedCharacterTemplates_HeavyGadget, default.AbilityUnlocksSlot_HeavyGadget, Slot, UnitSTate, LockedReason, CheckGameState);
 }
 
-static function bool HasSlot(CHItemSlot Slot, XComGameState_Unit UnitState, out string LockedReason, optional XComGameState CheckGameState, array<name> SoldierClassArray, array<name> AllowedCharacterTemplates, array<name> AbilityUnlocksSlot)
+static function bool HasSlot(array<name> SoldierClassArray, array<name> AllowedCharacterTemplates, array<name> AbilityUnlocksSlot, CHItemSlot Slot, XComGameState_Unit UnitState, out string LockedReason, optional XComGameState CheckGameState)
 {
 	local name Ability;
 	local X2EquipmentTemplate EquipmentTemplate;
@@ -301,7 +206,7 @@ static function bool HasSlot(CHItemSlot Slot, XComGameState_Unit UnitState, out 
 			{
 				foreach EquipmentTemplate.Abilities(Ability)
 				{
-					if (default.AbilityUnlocksSlot.Find(Ability) != INDEX_NONE)
+					if (AbilityUnlocksSlot.Find(Ability) != INDEX_NONE)
 					{
 						`LOG(UnitState.GetFullName() @ "has Slot, because they have a matching Ability:" @ Ability @ "on an equipped Item:" @ EquipmentTemplate.DataName @ "in slot:" @ InventoryItem.InventorySlot, default.bLog, 'RPGOMoreSlots');
 						return true;
@@ -328,61 +233,63 @@ static function int GetPriority(CHItemSlot Slot, XComGameState_Unit UnitState, o
 	return 120; // Ammo Pocket is 110 
 }
 
-static function bool ShowItemInLockerList_Ammo(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
-{
-	return ShowItemInLockerList(Slot, Unit, ItemState, ItemTemplate, default.AllowedItemCategories_Ammo);
-}
-
-static function bool ShowItemInLockerList_Vest(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
-{
-	return ShowItemInLockerList(Slot, Unit, ItemState, ItemTemplate, default.AllowedItemCategories_Vest);
-}
-
 static function bool ShowItemInLockerList_TechGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
 {
-	return ShowItemInLockerList(Slot, Unit, ItemState, ItemTemplate, default.AllowedItemCategories_TechGadget);
-}
-
-static function bool ShowItemInLockerList_PsiGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
-{
-	return ShowItemInLockerList(Slot, Unit, ItemState, ItemTemplate, default.AllowedItemCategories_PsiGadget);
+	`LOG("ShowItemInLockerList_TechGadget.length:" @ default.AllowedItemCategories_TechGadget.length, true, 'RPGOMoreSlots');
+	return ShowItemInLockerList(default.AllowedItemCategories_TechGadget, Slot, Unit, ItemState, ItemTemplate, CheckGameState);
 }
 
 static function bool ShowItemInLockerList_WristGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
 {
-	return ShowItemInLockerList(Slot, Unit, ItemState, ItemTemplate, default.AllowedItemCategories_WristGadget);
+	`LOG("ShowItemInLockerList_WristGadget.length:" @ default.AllowedItemCategories_WristGadget.length, true, 'RPGOMoreSlots');
+	return ShowItemInLockerList(default.AllowedItemCategories_WristGadget, Slot, Unit, ItemState, ItemTemplate, CheckGameState);
 }
 
 static function bool ShowItemInLockerList_HeavyGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
 {
-	return ShowItemInLockerList(Slot, Unit, ItemState, ItemTemplate, default.AllowedItemCategories_HeavyGadget);
+	`LOG("ShowItemInLockerList_HeavyGadget.length:" @ default.AllowedItemCategories_HeavyGadget.length, true, 'RPGOMoreSlots');
+	return ShowItemInLockerList(default.AllowedItemCategories_HeavyGadget, Slot, Unit, ItemState, ItemTemplate, CheckGameState);
 }
 
-static function ValidateLoadout_Ammo(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState) {
-	return ValidateLoadout(Slot, Unit, XComHQ, NewGameState, default.bAllowEmpty_Ammo, eInvSlot_Ammo);
+static function bool ShowItemInLockerList(array<name> AllowedItemCategories, CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
+{
+	local X2WeaponTemplate WeaponTemplate;
+	local name ItemCatStr;
+	`LOG("ShowItemInLockerList item:" @ ItemTemplate.FriendlyName, true, 'RPGOMoreSlots');
+	`LOG("ShowItemInLockerList item is of ItemCat:" @ ItemTemplate.ItemCat, true, 'RPGOMoreSlots');
+	`LOG("ShowItemInLockerList AllowedItemCategories.length:" @ AllowedItemCategories.length, true, 'RPGOMoreSlots');
+	foreach AllowedItemCategories(ItemCatStr) {
+		`LOG("ShowItemInLockerList foreach AllowedItemCategories:" @ ItemCatStr, true, 'RPGOMoreSlots');
+	}
+
+	if (ItemTemplate.IsA('X2WeaponTemplate'))
+	{
+		WeaponTemplate = X2WeaponTemplate(ItemTemplate);
+		`LOG("ShowItemInLockerList is a weapon of WeaponCat:" @ WeaponTemplate.WeaponCat, true, 'RPGOMoreSlots');
+		return AllowedItemCategories.Find(WeaponTemplate.WeaponCat) != INDEX_NONE;
+	}
+	else
+	{
+		return AllowedItemCategories.Find(ItemTemplate.ItemCat) != INDEX_NONE;
+	}
 }
 
-static function ValidateLoadout_Vest(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState) {
-	return ValidateLoadout(Slot, Unit, XComHQ, NewGameState, default.bAllowEmpty_Vest, eInvSlot_Vest);
+static function ValidateLoadout_TechGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState)
+{
+	ValidateLoadout(default.bAllowEmpty_TechGadget, default.AllowedItemCategories_TechGadget, eInvSlot_TacticalGadget, Slot, Unit, XComHQ, NewGameState);
 }
 
-static function ValidateLoadout_TechGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState) {
-	return ValidateLoadout(Slot, Unit, XComHQ, NewGameState, default.bAllowEmpty_TechGadget, eInvSlot_TechGadget);
+static function ValidateLoadout_WristGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState)
+{
+	ValidateLoadout(default.bAllowEmpty_WristGadget, default.AllowedItemCategories_WristGadget, eInvSlot_PrimaryPayload, Slot, Unit, XComHQ, NewGameState);
 }
 
-static function ValidateLoadout_PsiGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState) {
-	return ValidateLoadout(Slot, Unit, XComHQ, NewGameState, default.bAllowEmpty_PsiGadget, eInvSlot_PsiGadget);
+static function ValidateLoadout_HeavyGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState)
+{
+	ValidateLoadout(default.bAllowEmpty_HeavyGadget, default.AllowedItemCategories_HeavyGadget, eInvSlot_SecondaryPayload, Slot, Unit, XComHQ, NewGameState);
 }
 
-static function ValidateLoadout_WristGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState) {
-	return ValidateLoadout(Slot, Unit, XComHQ, NewGameState, default.bAllowEmpty_WristGadget, eInvSlot_WristGadget);
-}
-
-static function ValidateLoadout_HeavyGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState) {
-	return ValidateLoadout(Slot, Unit, XComHQ, NewGameState, default.bAllowEmpty_HeavyGadget, eInvSlot_HeavyGadget);
-}
-
-static function ValidateLoadout(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState, bool AllowEmpty, array<name> AllowedItemCategories, EInventorySlot InventorySlot)
+static function ValidateLoadout(bool AllowEmpty, array<name> AllowedItemCategories, EInventorySlot InventorySlot, CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState)
 {
 	local XComGameState_Item EquippedItem;
 	local string strDummy;
@@ -456,31 +363,19 @@ private static function XComGameState_Item FindBestItem(const XComGameState_Unit
 	}
 }
 
-function ECHSlotUnequipBehavior GetUnequipBehavior_Ammo(CHItemSlot Slot, ECHSlotUnequipBehavior DefaultBehavior, XComGameState_Unit Unit, XComGameState_Item ItemState, optional XComGameState CheckGameState) {
-	return GetUnequipBehavior(Slot, DefaultBehavior, Unit, ItemState, CheckGameState, default.bAllowEmpty_Ammo);
-}
-
-function ECHSlotUnequipBehavior GetUnequipBehavior_Vest(CHItemSlot Slot, ECHSlotUnequipBehavior DefaultBehavior, XComGameState_Unit Unit, XComGameState_Item ItemState, optional XComGameState CheckGameState) {
-	return GetUnequipBehavior(Slot, DefaultBehavior, Unit, ItemState, CheckGameState, default.bAllowEmpty_Vest);
-}
-
 function ECHSlotUnequipBehavior GetUnequipBehavior_TechGadget(CHItemSlot Slot, ECHSlotUnequipBehavior DefaultBehavior, XComGameState_Unit Unit, XComGameState_Item ItemState, optional XComGameState CheckGameState) {
-	return GetUnequipBehavior(Slot, DefaultBehavior, Unit, ItemState, CheckGameState, default.bAllowEmpty_TechGadget);
-}
-
-function ECHSlotUnequipBehavior GetUnequipBehavior_PsiGadget(CHItemSlot Slot, ECHSlotUnequipBehavior DefaultBehavior, XComGameState_Unit Unit, XComGameState_Item ItemState, optional XComGameState CheckGameState) {
-	return GetUnequipBehavior(Slot, DefaultBehavior, Unit, ItemState, CheckGameState, default.bAllowEmpty_PsiGadget);
+	return GetUnequipBehavior(default.bAllowEmpty_TechGadget, Slot, DefaultBehavior, Unit, ItemState, CheckGameState);
 }
 
 function ECHSlotUnequipBehavior GetUnequipBehavior_WristGadget(CHItemSlot Slot, ECHSlotUnequipBehavior DefaultBehavior, XComGameState_Unit Unit, XComGameState_Item ItemState, optional XComGameState CheckGameState) {
-	return GetUnequipBehavior(Slot, DefaultBehavior, Unit, ItemState, CheckGameState, default.bAllowEmpty_WristGadget);
+	return GetUnequipBehavior(default.bAllowEmpty_WristGadget, Slot, DefaultBehavior, Unit, ItemState, CheckGameState);
 }
 
 function ECHSlotUnequipBehavior GetUnequipBehavior_HeavyGadget(CHItemSlot Slot, ECHSlotUnequipBehavior DefaultBehavior, XComGameState_Unit Unit, XComGameState_Item ItemState, optional XComGameState CheckGameState) {
-	return GetUnequipBehavior(Slot, DefaultBehavior, Unit, ItemState, CheckGameState, default.bAllowEmpty_HeavyGadget);
+	return GetUnequipBehavior(default.bAllowEmpty_HeavyGadget, Slot, DefaultBehavior, Unit, ItemState, CheckGameState);
 }
 
-function ECHSlotUnequipBehavior GetUnequipBehavior(CHItemSlot Slot, ECHSlotUnequipBehavior DefaultBehavior, XComGameState_Unit Unit, XComGameState_Item ItemState, optional XComGameState CheckGameState, bool AllowEmpty)
+function ECHSlotUnequipBehavior GetUnequipBehavior(bool AllowEmpty, CHItemSlot Slot, ECHSlotUnequipBehavior DefaultBehavior, XComGameState_Unit Unit, XComGameState_Item ItemState, optional XComGameState CheckGameState)
 {	
 	if (AllowEmpty)
 	{
