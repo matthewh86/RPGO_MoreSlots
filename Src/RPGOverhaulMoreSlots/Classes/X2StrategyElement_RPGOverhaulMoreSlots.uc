@@ -1,4 +1,4 @@
-class X2StrategyElement_RPGOMoreSlots extends CHItemSlotSet config (RPGOMoreSlots);
+class X2StrategyElement_RPGOverhaulMoreSlots extends CHItemSlotSet config (RPGOMoreSlots);
 
 var localized string strSlotLetter_TechGadget;
 var localized string strSlotLetter_WristGadget;
@@ -142,11 +142,21 @@ static function bool CanAddItemToSlot_HeavyGadget(CHItemSlot Slot, XComGameState
 static function bool CanAddItemToSlot(array<name> AllowedItemCategories, CHItemSlot Slot, XComGameState_Unit Unit, X2ItemTemplate Template, optional XComGameState CheckGameState, optional int Quantity = 1, optional XComGameState_Item ItemState)
 {
 	local string strDummy;
+	local X2WeaponTemplate WeaponTemplate;
 
 	if (!Slot.UnitHasSlot(Unit, strDummy, CheckGameState) || Unit.GetItemInSlot(Slot.InvSlot, CheckGameState) != none)
 	{
 		`LOG(Unit.GetFullName() @ "can NOT add item to Slot:" @ Template.FriendlyName @ Template.DataName @ ", because unit does not have the Slot:" @ !Slot.UnitHasSlot(Unit, strDummy, CheckGameState) @ "or" @ "the Slot is already occupied:" @ Unit.GetItemInSlot(Slot.InvSlot, CheckGameState) != none, default.bLog, 'RPGOMoreSlots');
 		return false;
+	}
+	if (Template.IsA('X2WeaponTemplate'))
+	{
+		WeaponTemplate = X2WeaponTemplate(Template);
+		if (AllowedItemCategories.Find(WeaponTemplate.WeaponCat) != INDEX_NONE)
+		{
+			`LOG(Unit.GetFullName() @ "can add item to Slot:" @ Template.FriendlyName @ Template.DataName @ ", because it has a matching Weapon Category:" @ WeaponTemplate.WeaponCat, default.bLog, 'RPGOMoreSlots');
+			return true;
+		}
 	}
 	if (AllowedItemCategories.Find(Template.ItemCat) != INDEX_NONE)
 	{
@@ -235,43 +245,32 @@ static function int GetPriority(CHItemSlot Slot, XComGameState_Unit UnitState, o
 
 static function bool ShowItemInLockerList_TechGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
 {
-	`LOG("ShowItemInLockerList_TechGadget.length:" @ default.AllowedItemCategories_TechGadget.length, true, 'RPGOMoreSlots');
-	return ShowItemInLockerList(default.AllowedItemCategories_TechGadget, Slot, Unit, ItemState, ItemTemplate, CheckGameState);
+//	`LOG("ShowItemInLockerList_TechGadget.length:" @ default.AllowedItemCategories_TechGadget.length, true, 'RPGOMoreSlots');
+	return ShowItemInLockerList(default.AllowedItemCategories_TechGadget, default.AbilityUnlocksSlot_TechGadget, Slot, Unit, ItemState, ItemTemplate, CheckGameState);
 }
 
 static function bool ShowItemInLockerList_WristGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
 {
-	`LOG("ShowItemInLockerList_WristGadget.length:" @ default.AllowedItemCategories_WristGadget.length, true, 'RPGOMoreSlots');
-	return ShowItemInLockerList(default.AllowedItemCategories_WristGadget, Slot, Unit, ItemState, ItemTemplate, CheckGameState);
+//	`LOG("ShowItemInLockerList_WristGadget.length:" @ default.AllowedItemCategories_WristGadget.length, true, 'RPGOMoreSlots');
+	return ShowItemInLockerList(default.AllowedItemCategories_WristGadget, default.AbilityUnlocksSlot_WristGadget, Slot, Unit, ItemState, ItemTemplate, CheckGameState);
 }
 
 static function bool ShowItemInLockerList_HeavyGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
 {
-	`LOG("ShowItemInLockerList_HeavyGadget.length:" @ default.AllowedItemCategories_HeavyGadget.length, true, 'RPGOMoreSlots');
-	return ShowItemInLockerList(default.AllowedItemCategories_HeavyGadget, Slot, Unit, ItemState, ItemTemplate, CheckGameState);
+//	`LOG("ShowItemInLockerList_HeavyGadget.length:" @ default.AllowedItemCategories_HeavyGadget.length, true, 'RPGOMoreSlots');
+	return ShowItemInLockerList(default.AllowedItemCategories_HeavyGadget, default.AbilityUnlocksSlot_HeavyGadget, Slot, Unit, ItemState, ItemTemplate, CheckGameState);
 }
 
-static function bool ShowItemInLockerList(array<name> AllowedItemCategories, CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
+static function bool ShowItemInLockerList(array<name> AllowedItemCategories, array<name> AbilityUnlocksSlot, CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_Item ItemState, X2ItemTemplate ItemTemplate, XComGameState CheckGameState)
 {
 	local X2WeaponTemplate WeaponTemplate;
-	local name ItemCatStr;
-	`LOG("ShowItemInLockerList item:" @ ItemTemplate.FriendlyName, true, 'RPGOMoreSlots');
-	`LOG("ShowItemInLockerList item is of ItemCat:" @ ItemTemplate.ItemCat, true, 'RPGOMoreSlots');
-	`LOG("ShowItemInLockerList AllowedItemCategories.length:" @ AllowedItemCategories.length, true, 'RPGOMoreSlots');
-	foreach AllowedItemCategories(ItemCatStr) {
-		`LOG("ShowItemInLockerList foreach AllowedItemCategories:" @ ItemCatStr, true, 'RPGOMoreSlots');
-	}
-
 	if (ItemTemplate.IsA('X2WeaponTemplate'))
 	{
 		WeaponTemplate = X2WeaponTemplate(ItemTemplate);
-		`LOG("ShowItemInLockerList is a weapon of WeaponCat:" @ WeaponTemplate.WeaponCat, true, 'RPGOMoreSlots');
+//		`LOG("ShowItemInLockerList is a weapon of WeaponCat:" @ WeaponTemplate.WeaponCat, true, 'RPGOMoreSlots');
 		return AllowedItemCategories.Find(WeaponTemplate.WeaponCat) != INDEX_NONE;
 	}
-	else
-	{
-		return AllowedItemCategories.Find(ItemTemplate.ItemCat) != INDEX_NONE;
-	}
+	return AllowedItemCategories.Find(ItemTemplate.ItemCat) != INDEX_NONE;
 }
 
 static function ValidateLoadout_TechGadget(CHItemSlot Slot, XComGameState_Unit Unit, XComGameState_HeadquartersXCom XComHQ, XComGameState NewGameState)

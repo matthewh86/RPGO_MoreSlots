@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Default" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Guid>cf50321a-d81e-4c37-a102-e32a9273ee20</Guid>
-    <Name>RPGO More Slots</Name>
+    <Guid>7a163a0a-7866-4378-b1f7-6b7aef357daa</Guid>
+    <Name>RPG Overhaul More Slots</Name>
     <Description>Description of My XCOM 2 Mod.</Description>
     <SteamPublishID>0</SteamPublishID>
-    <AssemblyName>RPGO More Slots</AssemblyName>
-    <RootNamespace>RPGO More Slots</RootNamespace>
+    <AssemblyName>RPGOMoreSlots</AssemblyName>
+    <RootNamespace>RPGOMoreSlots</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Config\" />
     <Folder Include="Localization\" />
     <Folder Include="Src\" />
-    <Folder Include="Src\RPGOMoreSlots\" />
-    <Folder Include="Src\RPGOMoreSlots\Classes\" />
+    <Folder Include="Src\RPGOverhaulMoreSlots\" />
+    <Folder Include="Src\RPGOverhaulMoreSlots\Classes\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\XComRPGOMoreSlots.ini">
+    <Content Include="Config\XcomRPGOMoreSlots.ini">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Localization\RPGOMoreSlots.int">
@@ -28,8 +28,8 @@
     <Content Include="Config\XComEngine.ini" />
     <Content Include="Config\XComGame.ini" />
     <Content Include="Localization\XComGame.int" />
-    <Content Include="Src\RPGOMoreSlots\Classes\X2DownloadableContentInfo_RPGOMoreSlots.uc" />
-    <Content Include="Src\RPGOMoreSlots\Classes\X2StrategyElement_RPGOMoreSlots.uc">
+    <Content Include="Src\RPGOverhaulMoreSlots\Classes\X2DownloadableContentInfo_RPGOverhaulMoreSlots.uc" />
+    <Content Include="Src\RPGOverhaulMoreSlots\Classes\X2StrategyElement_RPGOverhaulMoreSlots.uc">
       <SubType>Content</SubType>
     </Content>
   </ItemGroup>
